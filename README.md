@@ -1,2 +1,2 @@
-# cs224n-homework
-homework writings and code for cs224n.
+# course code writings
+homework, writings and code for some courses.
