@@ -180,7 +180,7 @@ $P(y=k|x)$: 后验概率，接受数据之后
 2. 条件独立假设，给定分类，各特征独立
 
 $$
-P(x|y=k)=P(x_1,x_2, \ldots,x_n|y=k)=\prod ^n _{t=1} P(x_t | y=k) \\
+P(x|y=k)=P(x_1,x_2, \ldots,x_n|y=k)=\prod ^n _{t=1} P(x_t | y=k) \\ 
 P(x_i | y=k) = \frac{N(x_i,y=k)}{\sum^{|V|}_{t=1}N(x_t,y=k)}=\frac{x_i在k类别中出现的次数}{k类别中的总词数}
 $$
 
@@ -190,7 +190,7 @@ $P(x_i | y=k)$ 的情况：
 $$
 P(x_i | y=k) = \frac{\color{red} \delta \color{black} + N(x_i,y=k)}{\sum^{|V|}_{t=1}\color{red} \delta \color{black} + N(x_t,y=k)}
 $$
-$\delta$ 的选取可通过*交叉验证*得到。
+$\delta$​ 的选取可通过*交叉验证*得到。
 
 > 手动定义如何使用特征/手动定义特征，没有*学习*过程
 
@@ -302,9 +302,39 @@ $$
 
 **Implementation**:
 
-- [x] TO BE DONE. DONE, in cs224n homework 4.
+- [x] DONE, in cs224n homework 4.
 
 #### CNN
+
+**Conv**
+
+某些应用，如情感分析、文本分类等，对关键词汇的位置并不敏感。CNN在这些应用中有用武之地。
+
+![image-20210728165410085](https://raw.githubusercontent.com/WinterCyan/imagebed/main/img/nlp-course-text-classification-cnn.png)
+
+- $(x_1,\ldots,x_n)$ 表示句子，其中每个词 $x_i$​ 为词向量，$x_i \in \mathbb{R}^d$​，$d$ 为词嵌入维度；
+- 卷积核大小为 $k$
+- 输出通道为 $m$​
+- 则，卷积为线性层，$W \in \mathbb{R}^{(k \cdot d) \times m}$.​
+
+![image-20210728170454138](https://raw.githubusercontent.com/WinterCyan/imagebed/main/img/nlp-course-text-classification-cnn-2.png)
+
+![image-20210728170923691](https://raw.githubusercontent.com/WinterCyan/imagebed/main/img/nlp-course-text-classification-cnn-3.png)
+
+每个卷积核/通道产生一个特征，一个 feature map 相当于特征图中的一行（横向），得到 $m$ 个 feature。
+
+![image-20210728171132675](https://raw.githubusercontent.com/WinterCyan/imagebed/main/img/nlp-course-text-classification-cnn-4.png)
+
+**Pooling**
+
+如果对每一个 feature 取最大值(global pooling)，则得到*一个* $m$​​ 维向量。使用步长 stride=2 或 stride=3，进行无重叠的 max-pooling，得到 *$\frac{l}{2}$​​ 或 $\frac{l}{3}$​​ 个* $m$​​​​ 维的向量。
+
+**在文本中使用的CNN**
+
+不同长度的句子，通过 max-pooling 后会产生不同数量的 $m$ 维向量，此时，通过使用 *max-over-time pooling (global pooling)* 产生一个 $m$​​ 维向量。
+
+1. 同时使用不同的 kernel_size，conv-relu-pool 之后 concat 在一起。
+2. 和 CV 中一样，可以通过堆叠多层 CNN 获取更好效果。
 
 ## Course 3, Language Modeling
 
@@ -461,4 +491,12 @@ $$
 ### 权重捆绑（Weight Tying）
 
 全连接权重 $M\in \mathbb{R}^{d \times |V|}$ 使用 $Embedding$ 的权重，减小模型大小。
+
+## Course 4, Seq2Seq and Attention
+
+### Basics
+
+### Attention
+
+### Transformer
 
